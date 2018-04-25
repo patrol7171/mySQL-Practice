@@ -74,6 +74,47 @@ SELECT title FROM film WHERE film_id IN (
 	SELECT i.film_id FROM inventory i INNER JOIN rental r ON i.inventory_id=r.inventory_id
     GROUP BY rental_id HAVING COUNT(rental_id) >= 1);
 
+SELECT store, total_sales FROM sales_by_store; 
+
+SELECT s.store_id, c.city, d.country 
+FROM store s, address a, city c, country d
+WHERE s.address_id=a.address_id AND a.city_id=c.city_id AND c.country_id=d.country_id;
+
+SELECT * FROM sales_by_film_category
+ORDER BY total_sales DESC LIMIT 5;
+
+select `c`.`name` AS `category`,sum(`p`.`amount`) AS `total_sales` from 
+(((((`payment` `p` join `rental` `r` on((`p`.`rental_id` = `r`.`rental_id`))) join `inventory` `i` on
+((`r`.`inventory_id` = `i`.`inventory_id`))) join `film` `f` on((`i`.`film_id` = `f`.`film_id`))) 
+join `film_category` `fc` on((`f`.`film_id` = `fc`.`film_id`))) join `category` `c` on
+((`fc`.`category_id` = `c`.`category_id`))) group by `c`.`name` order by `total_sales` desc limit 5;
+
+
+CREATE view Top_5_Genres AS 
+	select `c`.`name` AS `category`,sum(`p`.`amount`) AS `total_sales` from 
+(((((`payment` `p` join `rental` `r` on((`p`.`rental_id` = `r`.`rental_id`))) join `inventory` `i` on
+((`r`.`inventory_id` = `i`.`inventory_id`))) join `film` `f` on((`i`.`film_id` = `f`.`film_id`))) 
+join `film_category` `fc` on((`f`.`film_id` = `fc`.`film_id`))) join `category` `c` on
+((`fc`.`category_id` = `c`.`category_id`))) group by `c`.`name` order by `total_sales` desc limit 5;
+
+
+DROP VIEW top_5_genres;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
